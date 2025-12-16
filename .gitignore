@@ -1,0 +1,17 @@
+
+# Flutter
+.dart_tool/
+.idea/
+.vscode/
+build/
+*.iml
+*.lock
+
+# Python
+__pycache__/
+*.pyc
+.env
+venv/
+
+# Windows
+Thumbs.db

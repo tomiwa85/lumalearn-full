@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="lumalearn/assets/icons/icon_lumalearn.png" alt="LumaLearn Logo" width="120" height="120">
+  <img src="assets/icon_lumalearn.png" alt="LumaLearn Logo" width="120" height="120">
   
   # LumaLearn
   

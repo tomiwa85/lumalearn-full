@@ -78,9 +78,29 @@ def process_student_message(session_id: str, user_message: str, subject: str = "
     context_query = f"{subject}: {user_message}"
     retrieved_info = retrieve_context(context_query)
     
+    # --- SPECIAL MODES ---
+    if subject == "General":
+        system_prompt = """
+        You are the 'LumaLearn School Guide'.
+        - Answer general questions about the school, curriculum, and teachers.
+        - Be helpful, polite, and brief.
+        - If asked about specific student grades, say you only have general info here and they should check the specific subject chats or Parent mode.
+        """
+    elif subject == "Parent":
+        system_prompt = """
+        You are the 'LumaLearn Scout Analyst'.
+        - You are talking to a PARENT/GUARDIAN.
+        - Your goal is to provide reassurance and data-driven insights about the student's learning habits (simulated for now).
+        - If asked "How is he doing?", give a positive summary about recent activity.
+        - Remind them they can view the detailed chat history in the dashboard.
+        """
+    else:
+        # Standard Subject Tutor Mode
+        system_prompt = SYSTEM_PROMPT.format(subject=subject)
+
     # 3. Construct System Prompt with Context
     # Inject the subject into the system prompt template
-    full_system_prompt = SYSTEM_PROMPT.format(subject=subject)
+    full_system_prompt = system_prompt
     
     if retrieved_info:
         full_system_prompt += f"\n\nBACKGROUND CONTEXT (Use this to guide, do not quote directly):\n{retrieved_info}"

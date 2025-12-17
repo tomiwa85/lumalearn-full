@@ -106,5 +106,5 @@ LumaLearn includes a dedicated mode for parents/guardians:
 ---
 
 <div align="center">
-  Built with ❤️ by Tomiwa
+  Built by Olatomiwa Ojo
 </div>

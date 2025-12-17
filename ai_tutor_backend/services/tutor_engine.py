@@ -108,15 +108,22 @@ def process_student_message(session_id: str, user_message: str, subject: str = "
     # 4. Get History (Optional: Retrieve last N messages for context)
     # For MVP, we might just send the current message or fetch history.
     # Let's fetch the last 5 messages.
+    # 4. Get History (Contextual Memory)
     history_str = ""
     try:
-        hist_response = supabase.table("messages").select("*").eq("session_id", session_id).order("created_at", desc=True).limit(5).execute()
-        # Reverse to chronological order
+        print(f"\n[DEBUG] Fetching history for session_id: {session_id}")
+        # Fetch recent history from 'chat_messages' (NOT 'messages')
+        hist_response = supabase.table("chat_messages").select("*").eq("session_id", session_id).order("created_at", desc=True).limit(20).execute()
+        print(f"[DEBUG] Raw history response: {hist_response.data}")
+        # Reverse to chronological order (Oldest -> Newest)
         msgs = hist_response.data[::-1] 
+        print(f"[DEBUG] Found {len(msgs)} messages in history")
         for m in msgs:
-            history_str += f"{m['role']}: {m['content']}\n"
+            role_label = "Student" if m['role'] == "user" else "Tutor"
+            history_str += f"{role_label}: {m['content']}\n"
+        print(f"[DEBUG] Formatted history:\n{history_str}")
     except Exception as e:
-        print(f"Error fetching history: {e}")
+        print(f"[ERROR] Error fetching history: {e}")
 
     # Combine History and Current Message for the LLM?
     # Actually, Groq API supports a list of messages. 
